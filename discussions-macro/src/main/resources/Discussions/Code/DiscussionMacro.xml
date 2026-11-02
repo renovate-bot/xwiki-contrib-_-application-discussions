@@ -382,10 +382,14 @@
     #set ($offset = $totalNumberPages - 1)
   #end
   #set ($messages = $services.discussions.getMessagesByDiscussion($discussion, $offset, $pageSize))
-== $discussion.title ==
+  ## The title and description are plain text: escape them so that they are not interpreted as wiki syntax. Line
+  ## breaks are removed from the title since a heading must stay on a single line.
+  #set ($title = "$!discussion.title")
+  #set ($escapedTitle = $services.rendering.escape($title.replaceAll('[\r\n]+', ' '), $xwiki.currentContentSyntaxId))
+== $escapedTitle ==
 
-#if ($discussion.description)
-$discussion.description
+#if ("$!discussion.description" != '')
+$services.rendering.escape($discussion.description, $xwiki.currentContentSyntaxId)
 #end
 
 #if ($listUsers)
