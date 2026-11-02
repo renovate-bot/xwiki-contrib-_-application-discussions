@@ -40,6 +40,8 @@
 [[$services.localization.render('discussions.messagestream.discussions.back')&gt;&gt;doc:WebHome||class="btn 
   btn-primary"]]
 
-{{discussion reference="$request.reference" namespace='MessageStreamDiscussion' type='user' listUsers=true/}}
+## The reference comes from the request: escape it so that it stays a single macro parameter value.
+#set ($escapedReference = $services.rendering.escape("$!request.reference", $xwiki.currentContentSyntaxId))
+{{discussion reference="$escapedReference" namespace='MessageStreamDiscussion' type='user' listUsers=true/}}
 {{/velocity}}</content>
 </xwikidoc>
